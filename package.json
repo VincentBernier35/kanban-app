@@ -4,7 +4,7 @@
   "description": "this is a rest API for a kanban app. The front will be on another app.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -27,5 +27,8 @@
     "express": "^4.18.1",
     "pg": "^8.8.0",
     "sequelize": "^6.21.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
