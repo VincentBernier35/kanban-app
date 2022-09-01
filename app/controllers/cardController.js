@@ -1,15 +1,37 @@
-// const { List } = require("../models");
+const { Card, List } = require("../models");
 
-function getAllCards(req, res) {
-  res.send("Bienvenue dans getAllCards");
+async function getAllCards(req, res) {
+  const cards = await Card.findAll({
+    order: [
+      ["position", "ASC"],
+      ["created_at", "DESC"]
+    ],
+    include: {
+      association: "tags"
+    }
+  });
+  console.log("cards");
+  res.json(cards);
 }
 
-function getOneCard(req, res) {
-  res.send("bienvenue dans getOneCard");
+async function getOneCard(req, res) {
+  const cardId = req.params.id;
+  const oneCard = await Card.findByPk(cardId, {
+    include: { association: "tags" }
+  });
+  if (! oneCard) {
+    return res.status(404).json({ error: "Card not found. Please verify the provided id."});
+  }
+  res.json(oneCard);
 }
 
-function createCard(req, res) {
-  console.log("Hello from createCard");
+async function createCard(req, res) {
+  const { content, color, position, list_id } = req.body;
+
+  if (! content) {
+    return res.status(400).json({ error: "Missing body (or empty) parameter: 'content'."});
+  }
+  
 }
 
 function updateCard(req, res) {
