@@ -31,24 +31,96 @@ async function createCard(req, res) {
   if (! content) {
     return res.status(400).json({ error: "Missing body (or empty) parameter: 'content'."});
   }
-  
+  if (! list_id) {
+    return res.status(400).json({error: "Missing body parameter: 'list_id"});
+  }
+  if (position && isNaN(position)) {
+    return res.status(400).json({error: "Invalid type : position should be a number. "});
+  }
+
+  //*********** */
+  const card = Card.findByPk(cardId);
+  if (! card) {
+    return res.json({" error: Card not found please verify the provided id. "});
+  }
+  if (content !== undefined) {
+    card.content = content;
+  }
+  if (position !== undefined) {
+    card.position = position;
+  }
+  if (color !== undefined) {
+    card.color = color;
+  }
+  if (list_id) {
+    card.list_id = list_id;
+  }
+  await card.save();
+
+  res.send(card);
 }
 
 function updateCard(req, res) {
-  console.log("Hello from updateCard");
+  const cardId = req.params.id;
+  const { content, position, color, list_id } = req.body;
+
+  if (! content && ! position && ! color && ! list_id) {
+    return res.status(400).json({ error: "Invalid body. Should provide at least a 'content', 'color', 'position'  or 'list_id' property" });
+  }
+
+  if (position && isNaN(position)) {
+    return res.status(400).json({ error: "Invalid type: 'position' should be a number." });
+  }
+
+
+
+
+
+  const card = await Card.findByPk(cardId);
+  if (! card) {
+    return res.json({ error: "Card not found. Please verify the provided id." });
+  }
+
+  if (content !== undefined) {
+    card.content = content;
+  }
+
+  if (position !== undefined) {
+    card.position = position;
+  }
+
+  if (color !== undefined) {
+    card.color = color;
+  }
+
+  if (list_id) {
+    card.list_id = list_id;
+  }
+
+  await card.save();
+
+  res.send(card);
+
 }
 
-function deleteCard(req, res) {
-  console.log("Hello from deleteCard");
+async function deleteCard(req, res) {
+  const cardId = req.params.id;
+
+  const card = await Card.findByPk(cardId);
+  if (! card) {
+    return res.status(404).send({ error: "Card not found. Please verify the provided id." });
+  }
+
+  await card.destroy();
+
+  res.status(204).end();
 }
 
-function getAllCardsOfList(req, res) {
-  res.send("Bienvenue dans toutes les cartes d'une liste");
-}
+
 
 module.exports = {
   getAllCards,
-  getAllCardsOfList,
+
   getOneCard,
   createCard,
   updateCard,
