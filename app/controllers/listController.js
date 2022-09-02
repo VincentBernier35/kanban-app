@@ -52,13 +52,57 @@ async function createList(req, res) {
 }
 
 //**************************************** */
-async function 
+async function updateList(req, res) {
+  // collect params & body
+  const listId = parseInt(req.params.id);
+  const { name, position } = req.body;
+
+  //check user inputs
+  if (! name && ! position) {
+    return res.status(400).json
+  }
+
+  if (position && isNaN(position)) {
+    return res.status(400).json({ error: "Invalid body parameter 'position'. Should provide a number." });
+  }
+  // fetch from database
+  const list = await List.findByPk(listId);
+  if (! list) {
+    return res.status(404).json({ error: "List not found. Please verify the provided id." });
+  }
+  console.log(name);
+
+  // update 
+  if (name) {
+    list.name = sanitizeHtml(name);
+  }
+  if (position) {
+    list.position = parseInt(position);
+  }
+  await list.save();
+
+  // return response
+  res.json(list);
+}
 
 
 //**************************************** */
-function deleteList(req, res) {
-  console.log("Hello from deleteList");
+async function deleteList(req, res) {
+  // collect params & body
+  const id = parseInt(req.params.id);
+
+  // fetch from database
+  const list = await List.findByPk(id);
+  if(! list) {
+    return res.status(404).json({ error: "List not found. please verify the provided id"});
+  }
+  // update database
+  await list.destroy();
+  // return response
+  res.status(204).end();
 }
+
+//**************************************** */
 
 module.exports = {
   getAllLists,
