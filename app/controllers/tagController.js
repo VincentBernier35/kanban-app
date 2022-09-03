@@ -75,13 +75,43 @@ async function deleteTag(req, res) {
 }
 
 //************************************** */
-function addTagToCard(req, res) {
-  
+async function addTagToCard(req, res) {
+  const { cardId, tagId } = req.params;
+
+  const card = await Card.findByPk(cardId);
+  if (! card) {
+    return res.json({ error: "Card not found..."});
+  }
+
+  const tag = await Tag.findByPk(tagId);
+  if (! tag) {
+    return res.json({ error: "Tag not found..."});
+  }
+
+  await card.addTag(tag);
+
+  const updatedCard = await Card.findByPk(cardId, { include: ["tags"]});
+  res.status(201).json(updatedCard);
 }
 
 //************************************** */
-function removeTagFromCard(req, res) {
-  res.send("hello from removeTagFromCard");
+async function removeTagFromCard(req, res) {
+  const { cardId, tagId } = req.params;
+
+  const card = await Card.findByPk(cardId);
+  if (! card) {
+    return res.status(401).json({ error: "Card not found..."});
+  }
+
+  const tag = await Tag.findByPk(tagId);
+  if (! tag) {
+    return res.status(401).json({error: "Tag not found..."});
+  }
+
+  await card.removeTag(tag);
+
+  const updatedcard = await Card.findByPk(cardId, { include: ["tags"]});
+  res.json(updatedcard);
 }
 
 //************************************** */

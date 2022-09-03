@@ -25,7 +25,7 @@ async function getOneList(req, res) {
     res.status(404).json({ error: "List not found please verify the provided id"});
     return;
   }
-  const list = await List.findByPk(listId); 
+  const list = await List.findByPk(listId);
   if (! list) { // si elle n'existe pas alors 404
     res.status(404).json({ error: "List not found. Please verify the provided id."});
     return; // je stoppe la fonction
@@ -59,7 +59,7 @@ async function updateList(req, res) {
 
   //check user inputs
   if (! name && ! position) {
-    return res.status(400).json
+    return res.status(400).json({ error: "Please verify the parameters send through the body"});
   }
 
   if (position && isNaN(position)) {
@@ -72,7 +72,7 @@ async function updateList(req, res) {
   }
   console.log(name);
 
-  // update 
+  // update
   if (name) {
     list.name = sanitizeHtml(name);
   }
