@@ -9,6 +9,10 @@ app.get("/", function(req, res) {
   res.send("Bienvenue sur kanban-app!");
 });
 
+// parsing info through body
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.use("/api", router);
 
 // start the app

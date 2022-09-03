@@ -1,4 +1,4 @@
-const { Tag, Card } = require("../models");
+const { Tag } = require("../models");
 const { isValidHexadecimalColor } = require("./utils");
 
 //************************************** */
@@ -75,52 +75,12 @@ async function deleteTag(req, res) {
 }
 
 //************************************** */
-async function addTagToCard(req, res) {
-  const { cardId, tagId } = req.params;
 
-  const card = await Card.findByPk(cardId);
-  if (! card) {
-    return res.json({ error: "Card not found..."});
-  }
 
-  const tag = await Tag.findByPk(tagId);
-  if (! tag) {
-    return res.json({ error: "Tag not found..."});
-  }
-
-  await card.addTag(tag);
-
-  const updatedCard = await Card.findByPk(cardId, { include: ["tags"]});
-  res.status(201).json(updatedCard);
-}
-
-//************************************** */
-async function removeTagFromCard(req, res) {
-  const { cardId, tagId } = req.params;
-
-  const card = await Card.findByPk(cardId);
-  if (! card) {
-    return res.status(401).json({ error: "Card not found..."});
-  }
-
-  const tag = await Tag.findByPk(tagId);
-  if (! tag) {
-    return res.status(401).json({error: "Tag not found..."});
-  }
-
-  await card.removeTag(tag);
-
-  const updatedcard = await Card.findByPk(cardId, { include: ["tags"]});
-  res.json(updatedcard);
-}
-
-//************************************** */
 module.exports = {
   getAllTags,
   getOneTag,
   createTag,
   updateTag,
-  deleteTag,
-  addTagToCard,
-  removeTagFromCard
+  deleteTag
 };

@@ -1,4 +1,4 @@
-const { Card, List } = require("../models");
+const { Card, List, Tag } = require("../models");
 const { isValidHexadecimalColor } = require("./utils");
 
 //**************************************** */
@@ -88,6 +88,7 @@ async function updateCard(req, res) {
   if (color !== undefined) {
     card.color = color;
   }
+
   if (list_id) {
     card.list_id = list_id;
   }
@@ -118,23 +119,51 @@ async function deleteCard(req, res) {
 }
 
 //**************************************** */
-async function getAllCardsOfList(req, res) {
-  const listId = req.params.listId;
+async function addTagToCard(req, res) {
+  const { cardId, tagId } = req.params;
 
-  const cards = await Card.findAll({
-    where: { list_id: listId },
-    include: { association: "tags" } // bonus : je rajoute les tags des cartes dans la réponse pour simplifier le code du front plus tard
-  });
+  const card = await Card.findByPk(cardId);
+  if (! card) {
+    return res.json({ error: "Card not found. Please verify the provided id." });
+  }
 
-  res.json(cards);
+  const tag = await Tag.findByPk(tagId);
+  if (! tag) {
+    return res.json({ error: "Tag not found. Please verify the provided id." });
+  }
+
+  await card.addTag(tag);
+
+  const updatedCard = await Card.findByPk(cardId, { include: ["tags"] });
+  res.status(201).json(updatedCard);
 }
 
 //**************************************** */
+async function removeTagFromCard(req, res) {
+  const { cardId, tagId } = req.params;
+
+  const card = await Card.findByPk(cardId);
+  if (! card) {
+    return res.json({ error: "Card not found. Please verify the provided id." });
+  }
+
+  const tag = await Tag.findByPk(tagId);
+  if (! tag) {
+    return res.json({ error: "Tag not found. Please verify the provided id." });
+  }
+
+  await card.removeTag(tag);
+
+  const updatedCard = await Card.findByPk(cardId, { include: ["tags"] });
+  res.json(updatedCard);
+}
+
 module.exports = {
   getAllCards,
-  getAllCardsOfList,
   getOneCard,
   createCard,
   updateCard,
-  deleteCard
+  deleteCard,
+  addTagToCard,
+  removeTagFromCard
 };

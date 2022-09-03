@@ -33,6 +33,18 @@ async function getOneList(req, res) {
   res.json(list);
 }
 //**************************************** */
+async function getAllCardsByList(req, res) {
+  const listId = req.params.id;
+
+  const cards = await Card.findAll({
+    where: { list_id: listId },
+    include: { association: "tags" } // bonus : je rajoute les tags des cartes dans la réponse pour simplifier le code du front plus tard
+  });
+
+  res.json(cards);
+}
+
+//**************************************** */
 async function createList(req, res) {
   const { name, position } = req.body;
 
@@ -99,12 +111,14 @@ async function deleteList(req, res) {
   res.status(204).end();
 }
 
-//**************************************** */
+
+
 
 module.exports = {
   getAllLists,
   getOneList,
   createList,
   updateList,
-  deleteList
+  deleteList,
+  getAllCardsByList
 };

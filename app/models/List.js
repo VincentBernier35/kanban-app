@@ -8,7 +8,7 @@ List.init({
     type: DataTypes.TEXT
   },
   position: {
-    type: DataTypes.INTEGER  // note: pour simplifier 2 listes peuvent avoir la même position
+    type: DataTypes.INTEGER // note: pour simplifier 2 listes peuvent avoir la même position
   }
 }, {
   sequelize, // c'est l'instance de connexion
