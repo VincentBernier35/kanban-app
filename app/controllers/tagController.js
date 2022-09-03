@@ -3,16 +3,15 @@ const { isValidHexadecimalColor } = require("./utils");
 
 //************************************** */
 async function getAllTags(req, res) {
-  // fetch from database
+
   const tags = await Tag.findAll();
   res.json(tags);
 }
 
 //************************************** */
 async function getOneTag(req, res) {
-  // collect the params id
+
   const tagId = req.params.id;
-  // fetch from database
   const tag = await Tag.findByPk(tagId);
 
   if (! tag) {
@@ -32,6 +31,7 @@ async function createTag(req, res) {
   if (color && ! isValidHexadecimalColor(color)) {
     return res.status(400).json({ error : "Invalid type: 'color' should be a hexadecimal code."});
   }
+
   const tag = await Tag.create({ name, color });
   res.status(201).json(tag);
 }
