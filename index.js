@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const cors =require("cors");
 const router = require("./app/routers");
 const app = express();
 
@@ -13,7 +14,9 @@ app.get("/", function(req, res) {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/api", router);
+app.use("/api", cors({ //autorisation des cross origin requests uniquement pour les routes de l'API
+  origin: "*" // ici, j'autorise tout le monde mais je pourrais aussi (pour plus de sécurité!)ne whitelister que certains clients définis à l'avance
+}), router);
 
 // start the app
 const port = process.env.PORT || 4000;
