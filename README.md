@@ -1,18 +1,53 @@
 # Kanban app
 
-## objectif
+## objective
 
-Réalisation de cette application de type kanban. Cette app sera la partie Back-end. L'objectif est de mettre en pratique les méthodes permettant de concevoir une API 
-REST sécurisée.
+Realization of this kanban type application. This app is the Back-end part. The objective is to put into practice the methods for designing a secure REST API.
 
-## étapes
 
-- réalisation d'un MCD / MLD
-- définition des user stories
-- réalisation d'un wireframe
-- création d'un serveur avec express
-- création de la base de données avec PostgreSQL
-- utilisation de sequelize notamment pour la connexion à la BDD
-- Implémentation de l'API
-- Ajout de paramètre de sécurité
-- Mise en ligne de cette API
+## steps
+
+- realization of a MCD / MLD
+- definition of user stories
+- creation of a wireframe
+- creation of a server with express
+- creation of the database with PostgreSQL
+- use of sequelize especially for connection to the database and for the models
+- API implementation
+- Add security parameter
+- Putting this API online
+
+
+** Installation **
+
+
+1. Create a database (I personnaly used PostgreSQL)
+2. Import tables from added sql file.
+
+
+3. Create a .env file in the backend root, copy paste the following and change with your infos:
+```
+DB_HOST=localhost
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_user_password
+DB_DATABASE=your_db_name
+
+PORT=theOneYouWant
+```
+
+
+BACK-END SETUP  
+
+clone the repo
+
+```
+npm install
+```
+
+and run the server
+
+```
+npm run dev
+```
+
+happy developpement !
