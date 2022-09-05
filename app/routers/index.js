@@ -17,4 +17,14 @@ mainRouter.use("/lists",listRouter);
 mainRouter.use("/cards",cardRouter);
 mainRouter.use("/tags", tagsRouter);
 
+//404
+mainRouter.use(notFoundMiddleware);
+
+function notFoundMiddleware(req, res, next) {
+  res.status(404).json({error: "resource not found !"});
+  next(); // in case there would be another middleware
+}
+
+
+
 module.exports = mainRouter;
