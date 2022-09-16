@@ -24,7 +24,7 @@ INSERT INTO "tag" (id, name, color)
 VALUES 
   (1, 'Urgent', '#FF00FF'),
   (2, 'En retard', '#000000'),
-  (3, 'Eco-friendly', '#00FF00')
+  (3, 'En-cours', '#00FF00')
 ;
 
 INSERT INTO "card_has_tag" (card_id, tag_id)

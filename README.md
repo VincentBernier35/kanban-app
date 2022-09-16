@@ -16,7 +16,7 @@ Realization of this kanban type application. This app is the Back-end part. The 
 - API implementation
 - Add security parameter
 - Putting this API online
-
+oo
 
 ** Installation **
 
